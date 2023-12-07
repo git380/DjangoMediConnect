@@ -51,3 +51,23 @@ def pw_change(request):
         employee_info.emppasswd = request.POST['empPasswd1']
         employee_info.save()
         return render(request, 'ok.html')
+
+
+def register(request):
+    if request.method == 'GET':
+        if 'empId' not in request.session:
+            return redirect('login')
+        return render(request, 'employee/E101/register.html')
+
+    if request.method == 'POST':
+        empId = request.POST['empId']
+        fName = request.POST['fName']
+        lName = request.POST['lName']
+        empPasswd = request.POST['empPasswd']
+        empRole = int(request.POST['empRole'])
+
+        if not Employee.objects.filter(empid=empId).exists():
+            Employee(empid=empId, empfname=fName, emplname=lName, emppasswd=empPasswd, emprole=empRole).save()
+            return render(request, 'ok.html')
+        else:
+            return HttpResponse('IDが一致しています')
