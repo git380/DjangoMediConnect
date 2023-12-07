@@ -1,6 +1,7 @@
+from datetime import datetime
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from MediConnect.models import Employee, Tabyouin
+from MediConnect.models import Employee, Tabyouin, Patient
 
 
 def index(request):
@@ -128,3 +129,26 @@ def hospital_search(request):
         address = request.POST['address']
         hospitals = Tabyouin.objects.filter(tabyouinaddres__icontains=address)
         return render(request, 'hospital/H103/hospitalSearchResult.html', {'hospitals': hospitals})
+
+
+def patient_registration(request):
+    if request.method == 'GET':
+        return render(request, 'patient/P101/patientRegistration.html')
+
+    if request.method == 'POST':
+        patid = request.POST['patId']
+        patfname = request.POST['patFname']
+        patlname = request.POST['patLname']
+        hokenmei = request.POST['hokenmei']
+        hokenexp = datetime.strptime(request.POST['hokenexp'], '%Y-%m-%d')
+
+        if not Patient.objects.filter(patid=patid).exists():
+            if hokenexp > datetime.now():
+                Patient(patid=patid, patfname=patfname, patlname=patlname, hokenmei=hokenmei, hokenexp=hokenexp).save()
+                return render(request, 'ok.html')
+            else:
+                return HttpResponse('新しい日付を入力してください。')
+        else:
+            return HttpResponse('IDが一致しています。')
+
+    return HttpResponse("エラー")
