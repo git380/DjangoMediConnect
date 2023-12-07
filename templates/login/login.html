@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>ログイン</title>
+</head>
+<body>
+<h2>ログイン</h2>
+<form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    ユーザーID:<input type="text" name="empId"><br>
+    パスワード:<input type="password" name="empPasswd"><br>
+    <input type="submit" value="ログイン">
+</form>
+</body>
+</html>
