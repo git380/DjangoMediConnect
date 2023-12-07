@@ -118,3 +118,13 @@ def hospital_registration(request):
             return HttpResponse('IDが一致しています')
 
     return HttpResponse("エラー")
+
+
+def hospital_search(request):
+    if request.method == 'GET':
+        return render(request, 'hospital/H103/hospitalSearch.html')
+
+    if request.method == 'POST':
+        address = request.POST['address']
+        hospitals = Tabyouin.objects.filter(tabyouinaddres__icontains=address)
+        return render(request, 'hospital/H103/hospitalSearchResult.html', {'hospitals': hospitals})
