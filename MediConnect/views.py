@@ -40,3 +40,14 @@ def welcome(request):
 def logout(request):
     request.session.flush()
     return render(request, 'login/logout.html')
+
+
+def pw_change(request):
+    if request.method == 'GET':
+        return render(request, 'employee/E103/pwChange.html')
+
+    if request.method == 'POST':
+        employee_info = Employee.objects.get(empid=request.session.get('empId'))
+        employee_info.emppasswd = request.POST['empPasswd1']
+        employee_info.save()
+        return render(request, 'ok.html')
