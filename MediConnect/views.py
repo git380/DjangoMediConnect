@@ -152,3 +152,46 @@ def patient_registration(request):
             return HttpResponse('IDが一致しています。')
 
     return HttpResponse("エラー")
+
+
+def patient_all(request):
+    return render(request, 'patient/P102/patientAll.html', {'patients': Patient.objects.all()})
+
+
+def patient_update(request):
+    if request.method == 'GET':
+        patid = request.GET.get('patId')
+        patfname = request.GET.get('patFname')
+        patlname = request.GET.get('patLname')
+        hokenmei = request.GET.get('hokenmei')
+        hokenexp = request.GET.get('hokenexp')
+
+        context = {
+            'patId': patid,
+            'patFname': patfname,
+            'patLname': patlname,
+            'hokenmei': hokenmei,
+            'hokenexp': hokenexp,
+        }
+
+        return render(request, 'patient/P102/patientUpdate.html', context)
+
+    if request.method == 'POST':
+        patid = request.POST.get('patId')
+        hokenmei = request.POST.get('hokenmei')
+        hokenexp = datetime.strptime(request.POST.get('hokenexp'), "%Y-%m-%d").date()
+        oldhokenexp = datetime.strptime(request.POST.get('oldhokenexp'), "%Y-%m-%d").date()
+
+        if not hokenexp:
+            return HttpResponse('日付を入力してください。')
+
+        if hokenexp > oldhokenexp:
+            patient = Patient.objects.get(patid=patid)
+            patient.hokenmei = hokenmei
+            patient.hokenexp = hokenexp
+            patient.save()
+            return render(request, 'ok.html')
+        else:
+            return HttpResponse('新しい日付を入力してください。')
+
+    return HttpResponse("エラー")
