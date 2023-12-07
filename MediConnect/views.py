@@ -71,3 +71,27 @@ def register(request):
             return render(request, 'ok.html')
         else:
             return HttpResponse('IDが一致しています')
+
+
+def employee_search(request):
+    if request.method == 'GET':
+        employeeList = Employee.objects.exclude(emprole=1)
+        if not employeeList.exists():
+            return HttpResponse('従業員が見つかりません')
+        else:
+            return render(request, 'employee/E102/employeeList.html', {'employeeList': employeeList})
+
+    if request.method == 'POST':
+        return render(request, 'employee/E102/employeeUpdate.html', {'empId': request.POST['empId']})
+
+
+def employee_update(request):
+    if request.method == 'POST':
+        empId = request.POST.get('empId', '')
+        empFName = request.POST.get('empFName', '')
+        empLName = request.POST.get('empLName', '')
+        if empFName and empLName:
+            Employee.objects.filter(empid=empId).update(empfname=empFName, emplname=empLName)
+            return render(request, 'ok.html')
+        else:
+            return HttpResponse('エラー')
