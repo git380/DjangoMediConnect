@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>処置確定画面</title>
+</head>
+<body>
+<h1>処置確定画面</h1>
+<p>以下の処置情報を確定しました。</p>
+<p>患者ID: {{ patId }}</p>
+<p>薬剤ID: {{ medicineId }}</p>
+<p>数量: {{ quantity }}</p>
+<p>実施日: {{ impDate }}</p>
+<a href="{% url 'welcome' %}">ホームへ戻る</a>
+</body>
+</html>

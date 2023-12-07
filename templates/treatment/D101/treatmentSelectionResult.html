@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>処置確定画面</title>
+</head>
+<body>
+<h1>処置確定画面</h1>
+<p>以下の処置情報を確定しますか？</p>
+<p>患者ID: {{ patId }}</p>
+<p>薬剤ID: {{ medicineId }}</p>
+<p>数量: {{ quantity }}</p>
+<p>実施日: {{ impDate }}</p>
+<form action="{% url 'treatment_confirmation' %}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="patId" value="{{ patId }}">
+    <input type="hidden" name="medicineId" value="{{ medicineId }}">
+    <input type="hidden" name="quantity" value="{{ quantity }}">
+    <input type="hidden" name="impDate" value="{{ impDate|date:'Y-m-d' }}">
+    <input type="submit" value="処置確定">
+</form>
+<form action="{% url 'treatment_delete' %}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="削除">
+</form>
+</body>
+</html>

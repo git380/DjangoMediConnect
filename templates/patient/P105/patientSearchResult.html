@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>検索結果</title>
+</head>
+<body>
+<h1>検索結果</h1>
+<table>
+    <tr>
+        <th>患者ID</th>
+        <th>姓</th>
+        <th>名</th>
+        <th>保険証記号番号</th>
+        <th>有効期限</th>
+        <th>指示</th>
+    </tr>
+
+    {% for pat in patients %}
+        <tr>
+            <td>{{ pat.patid }}</td>
+            <td>{{ pat.patfname }}</td>
+            <td>{{ pat.patlname }}</td>
+            <td>{{ pat.hokenmei }}</td>
+            <td>{{ pat.hokenexp }}</td>
+            <td>
+                <form action="{% url 'treatment_selection' %}" method="get">
+                    {% csrf_token %}
+                    <input type="hidden" name="patId" value="{{ pat.patid }}">
+                    <input type="submit" value="指示">
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+</body>
+</html>

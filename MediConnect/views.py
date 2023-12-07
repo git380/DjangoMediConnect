@@ -1,7 +1,7 @@
 from datetime import datetime
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from MediConnect.models import Employee, Tabyouin, Patient
+from MediConnect.models import Employee, Tabyouin, Patient, Medicine, Treatment
 
 
 def index(request):
@@ -208,3 +208,69 @@ def patient_expiration(request):
         return HttpResponse('保険証期限が過ぎた患者は見つかりませんでした。')
     else:
         return render(request, 'patient/P104/patientSearch.html', context)
+
+
+def patient_search(request):
+    if request.method == 'GET':
+        return render(request, 'patient/P105/patientSearchResult.html', {'patients': Patient.objects.all()})
+
+
+def treatment_selection(request):
+    if request.method == 'GET':
+        medicines = Medicine.objects.all()
+        patid = request.GET.get('patId')
+
+        context = {
+            'medicines': medicines,
+            'patId': patid,
+        }
+
+        return render(request, 'treatment/D101/treatmentSelection.html', context)
+
+    if request.method == 'POST':
+        patid = request.POST['patId']
+        medicineid = request.POST['medicineId']
+        quantity = int(request.POST['quantity'])
+        impdate = datetime.strptime(request.POST['impDate'], "%Y-%m-%d").date()
+
+        context = {
+            'patId': patid,
+            'medicineId': medicineid,
+            'quantity': quantity,
+            'impDate': impdate,
+        }
+
+        return render(request, 'treatment/D101/treatmentSelectionResult.html', context)
+
+
+def treatment_delete(request):
+    if request.method == 'POST':
+        return render(request, 'ok.html')
+    return HttpResponse('Invalid Request')
+
+
+def treatment_confirmation(request):
+    if request.method == 'POST':
+        patid = request.POST['patId']
+        medicineid = request.POST['medicineId']
+        quantity = request.POST['quantity']
+        impdate = datetime.strptime(request.POST['impDate'], '%Y-%m-%d').date()
+
+        try:
+            Treatment.objects.create(patid=Patient.objects.get(patid=patid),
+                                     medicineid=Medicine.objects.get(medicineid=medicineid), quantity=quantity,
+                                     impdate=impdate)
+        except Exception as e:
+            print(e)
+            return HttpResponse('エラー')
+
+        context = {
+            'patId': patid,
+            'medicineId': medicineid,
+            'quantity': quantity,
+            'impDate': impdate
+        }
+
+        return render(request, 'treatment/D103/treatmentConfirmation.html', context)
+
+    return HttpResponse('無効なリクエスト')
