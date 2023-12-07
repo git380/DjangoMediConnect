@@ -195,3 +195,16 @@ def patient_update(request):
             return HttpResponse('新しい日付を入力してください。')
 
     return HttpResponse("エラー")
+
+
+def patient_expiration(request):
+    expired_patients = Patient.objects.filter(hokenexp__lt=datetime.now())
+    context = {
+        'expiredPatients': expired_patients,
+        'date': datetime.now(),
+    }
+
+    if not expired_patients:
+        return HttpResponse('保険証期限が過ぎた患者は見つかりませんでした。')
+    else:
+        return render(request, 'patient/P104/patientSearch.html', context)
