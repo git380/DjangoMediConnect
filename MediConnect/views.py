@@ -23,19 +23,15 @@ def login(request):
         except Employee.DoesNotExist:
             return render(request, 'login/error.html')
 
-    return HttpResponse("エラー")
-
 
 def welcome(request):
-    role = request.session.get('emprole')
+    role = request.session['emprole']
     if role == 1:
         return render(request, 'administrator.html')
     elif role == 2:
         return render(request, 'reception.html')
     elif role == 3:
         return render(request, 'physician.html')
-
-    return HttpResponse('エラー')
 
 
 def logout(request):
@@ -48,39 +44,32 @@ def pw_change(request):
         return render(request, 'employee/E103/pwChange.html')
 
     if request.method == 'POST':
-        employee_info = Employee.objects.get(empid=request.session.get('empId'))
-        employee_info.emppasswd = request.POST['empPasswd1']
-        employee_info.save()
+        Employee.objects.filter(empid=request.session['empId']).update(emppasswd=request.POST['empPasswd1'])
         return render(request, 'ok.html')
 
 
 def register(request):
     if request.method == 'GET':
-        if 'empId' not in request.session:
-            return redirect('login')
         return render(request, 'employee/E101/register.html')
 
     if request.method == 'POST':
         empId = request.POST['empId']
-        fName = request.POST['fName']
-        lName = request.POST['lName']
-        empPasswd = request.POST['empPasswd']
-        empRole = int(request.POST['empRole'])
 
-        if not Employee.objects.filter(empid=empId).exists():
-            Employee(empid=empId, empfname=fName, emplname=lName, emppasswd=empPasswd, emprole=empRole).save()
-            return render(request, 'ok.html')
-        else:
+        if Employee.objects.filter(empid=empId).exists():
             return HttpResponse('IDが一致しています')
+        else:
+            Employee(empid=empId, empfname=request.POST['fName'], emplname=request.POST['lName'],
+                     emppasswd=request.POST['empPasswd'], emprole=int(request.POST['empRole'])).save()
+            return render(request, 'ok.html')
 
 
 def employee_search(request):
     if request.method == 'GET':
         employeeList = Employee.objects.exclude(emprole=1)
-        if not employeeList.exists():
-            return HttpResponse('従業員が見つかりません')
-        else:
+        if employeeList.exists():
             return render(request, 'employee/E102/employeeList.html', {'employeeList': employeeList})
+        else:
+            return HttpResponse('従業員が見つかりません')
 
     if request.method == 'POST':
         return render(request, 'employee/E102/employeeUpdate.html', {'empId': request.POST['empId']})
@@ -88,11 +77,10 @@ def employee_search(request):
 
 def employee_update(request):
     if request.method == 'POST':
-        empId = request.POST.get('empId', '')
-        empFName = request.POST.get('empFName', '')
-        empLName = request.POST.get('empLName', '')
+        empFName = request.POST['empFName']
+        empLName = request.POST['empLName']
         if empFName and empLName:
-            Employee.objects.filter(empid=empId).update(empfname=empFName, emplname=empLName)
+            Employee.objects.filter(empid=request.POST['empId']).update(empfname=empFName, emplname=empLName)
             return render(request, 'ok.html')
         else:
             return HttpResponse('エラー')
@@ -104,21 +92,15 @@ def hospital_registration(request):
 
     if request.method == 'POST':
         tabyouinid = request.POST['tabyouinid']
-        tabyouinmei = request.POST['tabyouinmei']
-        tabyouinaddres = request.POST['tabyouinaddres']
-        tabyouintel = request.POST['tabyouintel']
-        tabyouinshihonkin = int(request.POST['tabyouinshihonkin'])
-        kyukyu = int(request.POST['kyukyu'])
 
-        if not Tabyouin.objects.filter(tabyouinid=tabyouinid).exists():
-            Tabyouin(tabyouinid=tabyouinid, tabyouinmei=tabyouinmei,
-                     tabyouinaddres=tabyouinaddres, tabyouintel=tabyouintel,
-                     tabyouinshihonkin=tabyouinshihonkin, kyukyu=kyukyu).save()
-            return render(request, 'ok.html')
-        else:
+        if Tabyouin.objects.filter(tabyouinid=tabyouinid).exists():
             return HttpResponse('IDが一致しています')
-
-    return HttpResponse("エラー")
+        else:
+            Tabyouin(tabyouinid=tabyouinid, tabyouinmei=request.POST['tabyouinmei'],
+                     tabyouinaddres=request.POST['tabyouinaddres'], tabyouintel=request.POST['tabyouintel'],
+                     tabyouinshihonkin=int(request.POST['tabyouinshihonkin']),
+                     kyukyu=int(request.POST['kyukyu'])).save()
+            return render(request, 'ok.html')
 
 
 def hospital_search(request):
@@ -126,9 +108,8 @@ def hospital_search(request):
         return render(request, 'hospital/H103/hospitalSearch.html')
 
     if request.method == 'POST':
-        address = request.POST['address']
-        hospitals = Tabyouin.objects.filter(tabyouinaddres__icontains=address)
-        return render(request, 'hospital/H103/hospitalSearchResult.html', {'hospitals': hospitals})
+        return render(request, 'hospital/H103/hospitalSearchResult.html', {
+            'hospitals': Tabyouin.objects.filter(tabyouinaddres__icontains=request.POST['address'])})
 
 
 def patient_registration(request):
@@ -137,21 +118,17 @@ def patient_registration(request):
 
     if request.method == 'POST':
         patid = request.POST['patId']
-        patfname = request.POST['patFname']
-        patlname = request.POST['patLname']
-        hokenmei = request.POST['hokenmei']
         hokenexp = datetime.strptime(request.POST['hokenexp'], '%Y-%m-%d')
 
-        if not Patient.objects.filter(patid=patid).exists():
+        if Patient.objects.filter(patid=patid).exists():
+            return HttpResponse('IDが一致しています。')
+        else:
             if hokenexp > datetime.now():
-                Patient(patid=patid, patfname=patfname, patlname=patlname, hokenmei=hokenmei, hokenexp=hokenexp).save()
+                Patient(patid=patid, patfname=request.POST['patFname'], patlname=request.POST['patLname'],
+                        hokenmei=request.POST['hokenmei'], hokenexp=hokenexp).save()
                 return render(request, 'ok.html')
             else:
                 return HttpResponse('新しい日付を入力してください。')
-        else:
-            return HttpResponse('IDが一致しています。')
-
-    return HttpResponse("エラー")
 
 
 def patient_all(request):
@@ -160,54 +137,37 @@ def patient_all(request):
 
 def patient_update(request):
     if request.method == 'GET':
-        patid = request.GET.get('patId')
-        patfname = request.GET.get('patFname')
-        patlname = request.GET.get('patLname')
-        hokenmei = request.GET.get('hokenmei')
-        hokenexp = request.GET.get('hokenexp')
-
-        context = {
-            'patId': patid,
-            'patFname': patfname,
-            'patLname': patlname,
-            'hokenmei': hokenmei,
-            'hokenexp': hokenexp,
-        }
-
-        return render(request, 'patient/P102/patientUpdate.html', context)
+        return render(request, 'patient/P102/patientUpdate.html', {
+            'patId': request.GET['patId'],
+            'patFname': request.GET['patFname'],
+            'patLname': request.GET['patLname'],
+            'hokenmei': request.GET['hokenmei'],
+            'hokenexp': request.GET['hokenexp'],
+        })
 
     if request.method == 'POST':
-        patid = request.POST.get('patId')
-        hokenmei = request.POST.get('hokenmei')
-        hokenexp = datetime.strptime(request.POST.get('hokenexp'), "%Y-%m-%d").date()
-        oldhokenexp = datetime.strptime(request.POST.get('oldhokenexp'), "%Y-%m-%d").date()
+        hokenexp = datetime.strptime(request.POST['hokenexp'], "%Y-%m-%d").date()
 
         if not hokenexp:
             return HttpResponse('日付を入力してください。')
 
-        if hokenexp > oldhokenexp:
-            patient = Patient.objects.get(patid=patid)
-            patient.hokenmei = hokenmei
-            patient.hokenexp = hokenexp
-            patient.save()
+        if hokenexp > datetime.strptime(request.POST['oldhokenexp'], "%Y-%m-%d").date():
+            Patient.objects.filter(patid=request.POST['patId']).update(hokenmei=request.POST['hokenmei'], hokenexp=hokenexp)
             return render(request, 'ok.html')
         else:
             return HttpResponse('新しい日付を入力してください。')
 
-    return HttpResponse("エラー")
-
 
 def patient_expiration(request):
     expired_patients = Patient.objects.filter(hokenexp__lt=datetime.now())
-    context = {
-        'expiredPatients': expired_patients,
-        'date': datetime.now(),
-    }
 
-    if not expired_patients:
-        return HttpResponse('保険証期限が過ぎた患者は見つかりませんでした。')
+    if expired_patients:
+        return render(request, 'patient/P104/patientSearch.html', {
+            'expiredPatients': expired_patients,
+            'date': datetime.now(),
+        })
     else:
-        return render(request, 'patient/P104/patientSearch.html', context)
+        return HttpResponse('保険証期限が過ぎた患者は見つかりませんでした。')
 
 
 def patient_search(request):
@@ -217,60 +177,34 @@ def patient_search(request):
 
 def treatment_selection(request):
     if request.method == 'GET':
-        medicines = Medicine.objects.all()
-        patid = request.GET.get('patId')
-
-        context = {
-            'medicines': medicines,
-            'patId': patid,
-        }
-
-        return render(request, 'treatment/D101/treatmentSelection.html', context)
+        return render(request, 'treatment/D101/treatmentSelection.html', {
+            'medicines': Medicine.objects.all(),
+            'patId': request.GET['patId'],
+        })
 
     if request.method == 'POST':
-        patid = request.POST['patId']
-        medicineid = request.POST['medicineId']
-        quantity = int(request.POST['quantity'])
-        impdate = datetime.strptime(request.POST['impDate'], "%Y-%m-%d").date()
-
-        context = {
-            'patId': patid,
-            'medicineId': medicineid,
-            'quantity': quantity,
-            'impDate': impdate,
-        }
-
-        return render(request, 'treatment/D101/treatmentSelectionResult.html', context)
+        return render(request, 'treatment/D101/treatmentSelectionResult.html', {
+            'patId': request.POST['patId'],
+            'medicineId': request.POST['medicineId'],
+            'quantity': int(request.POST['quantity']),
+            'impDate': datetime.strptime(request.POST['impDate'], "%Y-%m-%d").date(),
+        })
 
 
 def treatment_delete(request):
     if request.method == 'POST':
         return render(request, 'ok.html')
-    return HttpResponse('Invalid Request')
 
 
 def treatment_confirmation(request):
     if request.method == 'POST':
-        patid = request.POST['patId']
-        medicineid = request.POST['medicineId']
-        quantity = request.POST['quantity']
-        impdate = datetime.strptime(request.POST['impDate'], '%Y-%m-%d').date()
-
         try:
-            Treatment.objects.create(patid=Patient.objects.get(patid=patid),
-                                     medicineid=Medicine.objects.get(medicineid=medicineid), quantity=quantity,
-                                     impdate=impdate)
+            Treatment(patid=Patient.objects.get(patid=request.POST['patId']),
+                      medicineid=Medicine.objects.get(medicineid=request.POST['medicineId']),
+                      quantity=request.POST['quantity'],
+                      impdate=datetime.strptime(request.POST['impDate'], '%Y-%m-%d').date()).save()
         except Exception as e:
             print(e)
             return HttpResponse('エラー')
 
-        context = {
-            'patId': patid,
-            'medicineId': medicineid,
-            'quantity': quantity,
-            'impDate': impdate
-        }
-
-        return render(request, 'treatment/D103/treatmentConfirmation.html', context)
-
-    return HttpResponse('無効なリクエスト')
+        return render(request, 'ok.html')
