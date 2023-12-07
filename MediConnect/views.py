@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from MediConnect.models import Employee
+from MediConnect.models import Employee, Tabyouin
 
 
 def index(request):
@@ -95,3 +95,26 @@ def employee_update(request):
             return render(request, 'ok.html')
         else:
             return HttpResponse('エラー')
+
+
+def hospital_registration(request):
+    if request.method == 'GET':
+        return render(request, 'hospital/H101/hospitalRegistration.html')
+
+    if request.method == 'POST':
+        tabyouinid = request.POST['tabyouinid']
+        tabyouinmei = request.POST['tabyouinmei']
+        tabyouinaddres = request.POST['tabyouinaddres']
+        tabyouintel = request.POST['tabyouintel']
+        tabyouinshihonkin = int(request.POST['tabyouinshihonkin'])
+        kyukyu = int(request.POST['kyukyu'])
+
+        if not Tabyouin.objects.filter(tabyouinid=tabyouinid).exists():
+            Tabyouin(tabyouinid=tabyouinid, tabyouinmei=tabyouinmei,
+                     tabyouinaddres=tabyouinaddres, tabyouintel=tabyouintel,
+                     tabyouinshihonkin=tabyouinshihonkin, kyukyu=kyukyu).save()
+            return render(request, 'ok.html')
+        else:
+            return HttpResponse('IDが一致しています')
+
+    return HttpResponse("エラー")
