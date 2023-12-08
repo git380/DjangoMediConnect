@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>仕入れ先登録画面</title>
+</head>
+<body>
+    <h1>仕入れ先登録画面</h1>
+    <form action="{% url 'supplier_registration' %}" method="post">
+        {% csrf_token %}
+        仕入れ先ID:<input type="text" name="shiireid"><br>
+        仕入れ先名:<input type="text" name="shiiremei"><br>
+        仕入れ先住所:<input type="text" name="shiireaddress"><br>
+        仕入れ先電話番号:<input type="text" name="shiiretel"><br>
+        資本金:<input type="number" name="shihonkin"><br>
+        納期:<input type="number" name="nouki"><br>
+        <input type="submit" value="登録">
+    </form>
+</body>
+</html>

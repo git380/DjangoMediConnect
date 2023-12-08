@@ -1,7 +1,7 @@
 from datetime import datetime
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from MediConnect.models import Employee, Tabyouin, Patient, Medicine, Treatment
+from MediConnect.models import Employee, Tabyouin, Patient, Medicine, Treatment, Shiiregyosha
 
 
 def index(request):
@@ -207,4 +207,25 @@ def treatment_confirmation(request):
             print(e)
             return HttpResponse('エラー')
 
+        return render(request, 'ok.html')
+
+
+def supplier_registration(request):
+    if request.method == 'GET':
+        return render(request, 'supplier/S101/registration.html')
+
+    if request.method == 'POST':
+        shiireid = request.POST['shiireid']
+
+        if Shiiregyosha.objects.filter(shiireid=shiireid).exists():
+            return HttpResponse('IDが一致しています')
+        else:
+            Shiiregyosha(
+                shiireid=shiireid,
+                shiiremei=request.POST['shiiremei'],
+                shiireaddress=request.POST['shiireaddress'],
+                shiiretel=request.POST['shiiretel'],
+                shihonkin=int(request.POST['shihonkin']),
+                nouki=int(request.POST['nouki'])
+            ).save()
         return render(request, 'ok.html')
