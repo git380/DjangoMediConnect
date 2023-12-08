@@ -20,4 +20,5 @@ urlpatterns = [
     path('treatment_delete/', views.treatment_delete, name='treatment_delete'),
     path('treatment_confirmation/', views.treatment_confirmation, name='treatment_confirmation'),
     path('supplier_registration/', views.supplier_registration, name='supplier_registration'),
+    path('supplier_list/', views.supplier_list, name='supplier_list'),
 ]

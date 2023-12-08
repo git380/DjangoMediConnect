@@ -229,3 +229,8 @@ def supplier_registration(request):
                 nouki=int(request.POST['nouki'])
             ).save()
         return render(request, 'ok.html')
+
+
+def supplier_list(request):
+    suppliers = Shiiregyosha.objects.all()
+    return render(request, 'supplier/S102/list.html', {'suppliers': suppliers})
