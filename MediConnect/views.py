@@ -234,3 +234,13 @@ def supplier_registration(request):
 def supplier_list(request):
     suppliers = Shiiregyosha.objects.all()
     return render(request, 'supplier/S102/list.html', {'suppliers': suppliers})
+
+
+def supplier_search(request):
+    if request.method == 'GET':
+        return render(request, 'supplier/S103/search.html')
+
+    if request.method == 'POST':
+        query = request.POST['address']
+        suppliers = Shiiregyosha.objects.filter(shiireaddress__contains=query)
+        return render(request, 'supplier/S103/searchResults.html', {'suppliers': suppliers})
