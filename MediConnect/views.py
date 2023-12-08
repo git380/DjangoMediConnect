@@ -1,6 +1,7 @@
 from datetime import datetime
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.db.models import Q
 from MediConnect.models import Employee, Tabyouin, Patient, Medicine, Treatment, Shiiregyosha
 
 
@@ -156,6 +157,20 @@ def patient_update(request):
             return render(request, 'ok.html')
         else:
             return HttpResponse('新しい日付を入力してください。')
+
+
+def patient_search_by_name(request):
+    if request.method == 'GET':
+        return render(request, 'patient/P103/search_form.html')
+
+    if request.method == 'POST':
+        name = request.POST['name']
+        matching_patients = Patient.objects.filter(Q(patlname=name) | Q(patfname=name))
+
+        if not matching_patients:
+            return HttpResponse('該当する患者がいません')
+
+        return render(request, 'patient/P103/search_results.html', {'patients': matching_patients})
 
 
 def patient_expiration(request):

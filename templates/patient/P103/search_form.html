@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>患者名検索</title>
+</head>
+<body>
+<h1>患者名検索</h1>
+<form action="{% url 'patient_search_by_name' %}" method="post">
+    {% csrf_token %}
+    <label for="name">名前を入力してください:</label>
+    <input type="text" id="name" name="name" required><br>
+    <input type="submit" value="検索">
+</form>
+</body>
+</html>
