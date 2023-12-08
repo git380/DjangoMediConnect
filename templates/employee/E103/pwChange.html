@@ -9,6 +9,7 @@
 <label>新しいパスワードを入力してください</label><br>
 <form action="{% url 'pw_change' %}" method="post">
     {% csrf_token %}
+    <input type="hidden" name="empId" value="{{ empId }}">
     パスワード:<input type="password" name="empPasswd1"><br>
     パスワード:<input type="password" name="empPasswd2"><br>
     <input type="submit" value="変更" disabled>

@@ -87,6 +87,11 @@ def employee_update(request):
             return HttpResponse('エラー')
 
 
+def employee_pw_change(request):
+    if request.method == 'POST':
+        return render(request, 'employee/E103/pwChange.html', {'empId': request.POST['empId']})
+
+
 def hospital_registration(request):
     if request.method == 'GET':
         return render(request, 'hospital/H101/hospitalRegistration.html')

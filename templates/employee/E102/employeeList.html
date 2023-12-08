@@ -15,6 +15,7 @@
         <th>姓</th>
         <th>名</th>
         <th>変更</th>
+        <th>パスワード変更</th>
     </tr>
     {% for employee in employeeList %}
         <tr>
@@ -23,6 +24,13 @@
             <td>{{ employee.empfname }}</td>
             <td>
                 <form action="{% url 'employee_search' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="empId" value="{{ employee.empid }}">
+                    <input type="submit" value="変更">
+                </form>
+            </td>
+            <td>
+                <form action="{% url 'employee_pw_change' %}" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="empId" value="{{ employee.empid }}">
                     <input type="submit" value="変更">
