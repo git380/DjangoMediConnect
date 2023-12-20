@@ -225,8 +225,8 @@ def treatment_delete(request):
 def treatment_confirmation(request):
     if request.method == 'POST':
         try:
-            Treatment(patid=Patient.objects.get(patid=request.POST['patId']),
-                      medicineid=Medicine.objects.get(medicineid=request.POST['medicineId']),
+            Treatment(patid=request.POST['patId'],
+                      medicineid=request.POST['medicineId'],
                       quantity=request.POST['quantity'],
                       impdate=datetime.strptime(request.POST['impDate'], '%Y-%m-%d').date()).save()
         except Exception as e:

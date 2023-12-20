@@ -42,7 +42,7 @@ class Medicine(models.Model):
 
 
 class Treatment(models.Model):
-    patid = models.ForeignKey(Patient, on_delete=models.CASCADE)
-    medicineid = models.ForeignKey(Medicine, on_delete=models.CASCADE)
+    patid = models.CharField(max_length=64)
+    medicineid = models.CharField(max_length=64)
     quantity = models.IntegerField()
     impdate = models.DateField()
