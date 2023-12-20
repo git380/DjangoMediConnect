@@ -268,3 +268,7 @@ def supplier_search(request):
     if request.method == 'POST':
         return render(request, 'supplier/S103/searchResults.html',
                       {'suppliers': Shiiregyosha.objects.filter(shiireaddress__contains=request.POST['address'])})
+
+
+def aaaaaa(request):
+    return render(request, 'supplier/alllist.html', {'data': Treatment.objects.all()})
