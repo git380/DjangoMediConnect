@@ -12,9 +12,9 @@
     <input type="hidden" name="patId" value="{{ patId }}">
     <label for="medicine">薬剤名:</label>
     <select name="medicineId" id="medicine">
-        {% for medicine in medicines %}
-            <option value="{{ medicine.medicineid }}">{{ medicine.medicinename }}</option>
-        {% endfor %}
+            <option value="1">オロナイン</option>
+            <option value="2">バンドエイド</option>
+            <option value="3">湿布</option>
     </select><br>
     数量:<input type="number" name="quantity" min="0"><br>
     実施日:<input type="date" name="impDate"><br>
