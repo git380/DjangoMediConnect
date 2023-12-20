@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-iny_pmj1f710d2y9r+lok9lz(cnz1w)=3#-$!)2hob*7@7j4q!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -77,8 +77,8 @@ WSGI_APPLICATION = 'DjangoMediConnect.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'r4a105Django',
-        'USER': 'r4a105',
+        'NAME': 'r4a133',
+        'USER': 'r4a133',
         'PASSWORD': 'password',
         'HOST': 'localhost',
         'PORT': '3306',
@@ -108,9 +108,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ja'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Tokyo'
 
 USE_I18N = True
 

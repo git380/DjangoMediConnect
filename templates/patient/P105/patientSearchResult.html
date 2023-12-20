@@ -6,6 +6,12 @@
 </head>
 <body>
 <h1>検索結果</h1>
+
+<!-- 患者検索機能 -->
+<label for="searchId">患者ID検索:</label>
+<input type="text" id="searchId">
+<button onclick="search()">検索</button>
+
 <table>
     <tr>
         <th>患者ID</th>
@@ -33,5 +39,32 @@
         </tr>
     {% endfor %}
 </table>
+
+<script>
+    function search() {
+        const input = document.getElementById("searchId").value;
+        const table = document.querySelector("table");
+        const rows = table.querySelectorAll("tr");
+
+        let matchFound = false;
+
+        rows.forEach(row => {
+            const cell = row.querySelector("td:first-child");
+            if (cell && cell.innerText === input) {
+                matchFound = true;
+            }
+        });
+
+        if (matchFound) {
+            rows.forEach(row => {
+                const cell = row.querySelector("td:first-child");
+                row.style.display = cell && cell.innerText === input ? "" : "none";
+            });
+        } else {
+            alert("該当する患者IDが見つかりませんでした。");
+        }
+    }
+</script>
+
 </body>
 </html>

@@ -33,6 +33,9 @@ def welcome(request):
         return render(request, 'reception.html')
     elif role == 3:
         return render(request, 'physician.html')
+    else:
+        return HttpResponse('エラー')
+
 
 
 def logout(request):
@@ -138,8 +141,11 @@ def patient_registration(request):
 
 
 def patient_all(request):
-    return render(request, 'patient/P102/patientAll.html', {'patients': Patient.objects.all()})
-
+    if Patient.objects.exists():
+        return render(request, 'patient/P102/patientAll.html', {'patients': Patient.objects.all()})
+    else:
+        # データベースが空の場合の処理
+        return HttpResponse("データベースは空です。")
 
 def patient_update(request):
     if request.method == 'GET':
