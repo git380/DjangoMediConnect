@@ -2,27 +2,64 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>Patient Search Results</title>
+    <title>患者名検索結果</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+        }
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #007BFF;
+        }
+        table {
+            width: 100%;
+            max-width: 800px;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
 </head>
 <body>
-<h1>Search Results</h1>
-<table>
-    <tr>
-        <th>患者ID</th>
-        <th>姓</th>
-        <th>名</th>
-        <th>保険証記号番号</th>
-        <th>有効期限</th>
-    </tr>
-    {% for pat in patients %}
+    <h1>検索結果</h1>
+    <table>
         <tr>
-            <td>{{ pat.patid }}</td>
-            <td>{{ pat.patfname }}</td>
-            <td>{{ pat.patlname }}</td>
-            <td>{{ pat.hokenmei }}</td>
-            <td>{{ pat.hokenexp }}</td>
+            <th>患者ID</th>
+            <th>姓</th>
+            <th>名</th>
+            <th>保険証記号番号</th>
+            <th>有効期限</th>
         </tr>
-    {% endfor %}
-</table>
+        {% for pat in patients %}
+            <tr>
+                <td>{{ pat.patid }}</td>
+                <td>{{ pat.patfname }}</td>
+                <td>{{ pat.patlname }}</td>
+                <td>{{ pat.hokenmei }}</td>
+                <td>{{ pat.hokenexp }}</td>
+            </tr>
+        {% endfor %}
+    </table>
 </body>
 </html>

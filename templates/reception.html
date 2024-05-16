@@ -3,6 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <title>受付画面</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007bff;
+            transition: color 0.3s ease;
+            display: inline-block;
+            padding: 10px 20px;
+            border: 2px solid #007bff;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        a:hover {
+            color: #0056b3;
+            border-color: #0056b3;
+            background-color: #007bff;
+        }
+    </style>
 </head>
 <body>
 <h1>ようこそ!受付画面です。</h1>
@@ -12,7 +51,7 @@
     <li><a href="{% url 'patient_registration' %}">患者を登録する</a></li>
     <li><a href="{% url 'patient_all' %}">患者の保険情報の変更</a></li>
     <li><a href="{% url 'patient_search_by_name' %}">患者名検索</a></li>
-{#    <li><a href="{% url 'patient_expiration' %}">保険証期限確認</a></li>#}
+    <li><a href="{% url 'patient_expiration' %}">保険証期限確認</a></li>
 </ul>
 </body>
 </html>

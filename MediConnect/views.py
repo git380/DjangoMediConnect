@@ -233,7 +233,12 @@ def treatment_confirmation(request):
             print(e)
             return HttpResponse('エラー')
 
-        return render(request, 'ok.html')
+        return render(request, 'treatment/D103/treatmentConfirmation.html', {
+            'patId': request.POST['patId'],
+            'medicineId': request.POST['medicineId'],
+            'quantity': int(request.POST['quantity']),
+            'impDate': datetime.strptime(request.POST['impDate'], "%Y-%m-%d").date(),
+        })
 
 
 def supplier_registration(request):

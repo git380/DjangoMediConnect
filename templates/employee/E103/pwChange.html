@@ -3,26 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <title>パスワードの変更</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #007BFF;
+        }
+        label {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            display: block;
+        }
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input[type="password"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        input[type="submit"]:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
 </head>
 <body>
-<h1>パスワードの変更</h1>
-<label>新しいパスワードを入力してください</label><br>
-<form action="{% url 'pw_change' %}" method="post">
-    {% csrf_token %}
-    <input type="hidden" name="empId" value="{{ empId }}">
-    パスワード:<input type="password" name="empPasswd1"><br>
-    パスワード:<input type="password" name="empPasswd2"><br>
-    <input type="submit" value="変更" disabled>
-</form>
+    <div>
+        <h1>パスワードの変更</h1>
+        <label>新しいパスワードを入力してください</label>
+        <form action="{% url 'pw_change' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="empId" value="{{ empId }}">
+            <input type="password" name="empPasswd1" placeholder="パスワード"><br>
+            <input type="password" name="empPasswd2" placeholder="パスワード"><br>
+            <input type="submit" value="変更" disabled>
+        </form>
+    </div>
 
-<script>
-    const inputs = document.querySelectorAll('input[type=password]');
-    const submitButton = document.querySelector('input[type=submit]');
-    Array.from(inputs).forEach(input => {
-        input.addEventListener('input', () => {
-            submitButton.disabled = Array.from(inputs).some(input => !input.value) || inputs[0].value !== inputs[1].value;
+    <script>
+        const inputs = document.querySelectorAll('input[type=password]');
+        const submitButton = document.querySelector('input[type=submit]');
+        Array.from(inputs).forEach(input => {
+            input.addEventListener('input', () => {
+                submitButton.disabled = Array.from(inputs).some(input => !input.value) || inputs[0].value !== inputs[1].value;
+            });
         });
-    });
-</script>
+    </script>
 </body>
 </html>

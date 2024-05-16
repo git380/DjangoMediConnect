@@ -3,14 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <title>他病院住所検索</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #007BFF;
+        }
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        label {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            display: block;
+        }
+        input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-<h1>他病院住所検索</h1>
-<form action="{% url 'hospital_search' %}" method="post">
-    {% csrf_token %}
-    <label for="address">住所:</label>
-    <input type="text" id="address" name="address"><br>
-    <input type="submit" value="検索">
-</form>
+    <h1>他病院住所検索</h1>
+    <form action="{% url 'hospital_search' %}" method="post">
+        {% csrf_token %}
+        <label for="address">住所:</label>
+        <input type="text" id="address" name="address"><br>
+        <input type="submit" value="検索">
+    </form>
 </body>
 </html>

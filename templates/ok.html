@@ -3,9 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <title>完了</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        p {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #007BFF;
+        }
+        a {
+            text-decoration: none;
+            color: white;
+            background-color: #007BFF;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        a:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-<p>完了</p>
-<a href="{% url 'welcome' %}">ホームへ戻る</a>
+    <div>
+        <p>完了</p>
+        <a href="{% url 'welcome' %}">ホームへ戻る</a>
+    </div>
 </body>
 </html>

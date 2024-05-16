@@ -3,25 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <title>処置確定画面</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #007BFF;
+        }
+        p {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        form {
+            display: inline-block;
+            margin: 10px;
+        }
+        input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        input[type="submit"]:first-of-type {
+            background-color: #28a745; /* Green for confirmation */
+        }
+        input[type="submit"]:first-of-type:hover {
+            background-color: #218838;
+        }
+        input[type="submit"]:last-of-type {
+            background-color: #dc3545; /* Red for deletion */
+        }
+        input[type="submit"]:last-of-type:hover {
+            background-color: #c82333;
+        }
+    </style>
 </head>
 <body>
-<h1>処置確定画面</h1>
-<p>以下の処置情報を確定しますか？</p>
-<p>患者ID: {{ patId }}</p>
-<p>薬剤ID: {{ medicineId }}</p>
-<p>数量: {{ quantity }}</p>
-<p>実施日: {{ impDate }}</p>
-<form action="{% url 'treatment_confirmation' %}" method="post">
-    {% csrf_token %}
-    <input type="hidden" name="patId" value="{{ patId }}">
-    <input type="hidden" name="medicineId" value="{{ medicineId }}">
-    <input type="hidden" name="quantity" value="{{ quantity }}">
-    <input type="hidden" name="impDate" value="{{ impDate|date:'Y-m-d' }}">
-    <input type="submit" value="処置確定">
-</form>
-<form action="{% url 'treatment_delete' %}" method="post">
-    {% csrf_token %}
-    <input type="submit" value="削除">
-</form>
+    <h1>処置確定画面</h1>
+    <p>以下の処置情報を確定しますか？</p>
+    <p>患者ID: {{ patId }}</p>
+    <p>薬剤ID: {{ medicineId }}</p>
+    <p>数量: {{ quantity }}</p>
+    <p>実施日: {{ impDate }}</p>
+    <form action="{% url 'treatment_confirmation' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="patId" value="{{ patId }}">
+        <input type="hidden" name="medicineId" value="{{ medicineId }}">
+        <input type="hidden" name="quantity" value="{{ quantity }}">
+        <input type="hidden" name="impDate" value="{{ impDate|date:'Y-m-d' }}">
+        <input type="submit" value="処置確定">
+    </form>
+    <form action="{% url 'treatment_delete' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="patId" value="{{ patId }}">
+        <input type="hidden" name="medicineId" value="{{ medicineId }}">
+        <input type="hidden" name="quantity" value="{{ quantity }}">
+        <input type="hidden" name="impDate" value="{{ impDate|date:'Y-m-d' }}">
+        <input type="submit" value="削除">
+    </form>
 </body>
 </html>

@@ -3,77 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <title>従業員一覧・ID検索</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+        }
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #007BFF;
+        }
+        input[type="text"] {
+            width: 200px;
+            padding: 10px;
+            margin: 10px 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        table {
+            width: 100%;
+            max-width: 800px;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        form {
+            margin: 0;
+        }
+        input[type="submit"] {
+            padding: 5px 10px;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-<h1>従業員一覧・ID検索</h1>
-<input type="text" id="searchId">
-<button onclick="search()">検索</button>
-<button onclick="reset()">リセット</button>
-<table>
-    <tr>
-        <th>従業員ID</th>
-        <th>姓</th>
-        <th>名</th>
-{#        <th>変更</th>#}
-        <th>パスワード変更</th>
-    </tr>
-    {% for employee in employeeList %}
+    <h1>従業員一覧・ID検索</h1>
+    <input type="text" id="searchId">
+    <button onclick="search()">検索</button>
+    <button onclick="reset()">リセット</button>
+    <table>
         <tr>
-            <td>{{ employee.empid }}</td>
-            <td>{{ employee.emplname }}</td>
-            <td>{{ employee.empfname }}</td>
-{#            <td>#}
-{#                <form action="{% url 'employee_search' %}" method="post">#}
-{#                    {% csrf_token %}#}
-{#                    <input type="hidden" name="empId" value="{{ employee.empid }}">#}
-{#                    <input type="submit" value="変更">#}
-{#                </form>#}
-{#            </td>#}
-            <td>
-                <form action="{% url 'employee_pw_change' %}" method="post">
-                    {% csrf_token %}
-                    <input type="hidden" name="empId" value="{{ employee.empid }}">
-                    <input type="submit" value="変更">
-                </form>
-            </td>
+            <th>従業員ID</th>
+            <th>姓</th>
+            <th>名</th>
+            <th>従業員氏名変更</th>
+            <th>パスワード変更</th>
         </tr>
-    {% endfor %}
-</table>
-<script>
-    function search() {
-        const input = document.getElementById("searchId").value;
-        const table = document.querySelector("table");
-        const rows = table.querySelectorAll("tr");
+        {% for employee in employeeList %}
+            <tr>
+                <td>{{ employee.empid }}</td>
+                <td>{{ employee.emplname }}</td>
+                <td>{{ employee.empfname }}</td>
+                <td>
+                    <form action="{% url 'employee_search' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="empId" value="{{ employee.empid }}">
+                        <input type="submit" value="変更">
+                    </form>
+                </td>
+                <td>
+                    <form action="{% url 'employee_pw_change' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="empId" value="{{ employee.empid }}">
+                        <input type="submit" value="変更">
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <script>
+        function search() {
+            const input = document.getElementById("searchId").value;
+            const table = document.querySelector("table");
+            const rows = table.querySelectorAll("tr");
 
-        let matchFound = false;
+            let matchFound = false;
 
-        rows.forEach(row => {
-            const cell = row.querySelector("td:first-child");
-            if (cell && cell.innerText === input) {
-                matchFound = true;
-            }
-        });
-
-        if (matchFound) {
             rows.forEach(row => {
                 const cell = row.querySelector("td:first-child");
-                row.style.display = cell && cell.innerText === input ? "" : "none";
+                if (cell && cell.innerText === input) {
+                    matchFound = true;
+                }
             });
-        } else {
-            alert("該当する従業員IDが見つかりませんでした。");
+
+            if (matchFound) {
+                rows.forEach(row => {
+                    const cell = row.querySelector("td:first-child");
+                    row.style.display = cell && cell.innerText === input ? "" : "none";
+                });
+            } else {
+                alert("該当する従業員IDが見つかりませんでした。");
+            }
         }
-    }
 
-    function reset() {
-        const table = document.querySelector("table");
-        const rows = table.querySelectorAll("tr");
+        function reset() {
+            const table = document.querySelector("table");
+            const rows = table.querySelectorAll("tr");
 
-        rows.forEach(row => {
-            row.style.display = "";
-        });
+            rows.forEach(row => {
+                row.style.display = "";
+            });
 
-        document.getElementById("searchId").value = "";
-    }
-</script>
+            document.getElementById("searchId").value = "";
+        }
+    </script>
 </body>
 </html>

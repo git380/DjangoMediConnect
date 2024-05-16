@@ -3,9 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <title>ようこそ</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #00c6ff, #0072ff);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        a {
+            text-decoration: none;
+            color: #00c6ff;
+            background-color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1.2em;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        a:hover {
+            background-color: #00c6ff;
+            color: white;
+        }
+    </style>
 </head>
 <body>
-    <h2>ようこそ</h2>
-    <a href="{% url 'login' %}">ログインページへ移動</a>
+    <div>
+        <h2>ようこそ</h2>
+        <a href="{% url 'login' %}">ログインページへ移動</a>
+    </div>
 </body>
 </html>

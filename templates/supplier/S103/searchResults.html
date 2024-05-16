@@ -3,14 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <title>検索結果画面</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #007BFF;
+        }
+        p {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+        a {
+            text-decoration: none;
+            color: white;
+            background-color: #007BFF;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        a:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-<h1>検索結果画面</h1>
-{% for supplier in suppliers %}
-    <p>{{ supplier.shiiremei }}</p>
-{% empty %}
-    <p>該当する仕入れ先が見つかりませんでした。</p>
-{% endfor %}
-<a href="{% url 'supplier_search' %}">再度検索する</a>
+    <h1>検索結果画面</h1>
+    {% if suppliers %}
+        {% for supplier in suppliers %}
+            <p>{{ supplier.shiiremei }}</p>
+        {% endfor %}
+    {% else %}
+        <p>該当する仕入れ先が見つかりませんでした。</p>
+    {% endif %}
+    <a href="{% url 'supplier_search' %}">再度検索する</a>
 </body>
 </html>

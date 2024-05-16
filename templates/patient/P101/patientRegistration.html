@@ -3,34 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <title>患者登録</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #007BFF;
+        }
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        label {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            display: block;
+        }
+        input[type="text"], input[type="date"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        input[type="submit"]:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
 </head>
 <body>
-<h1>患者登録</h1>
-<form action="{% url 'patient_registration' %}" method="post">
-    {% csrf_token %}
-    <label for="empId">患者ID:</label>
-    <input type="text" id="empId" name="patId"><br>
-    <label for="patFname">名:</label>
-    <input type="text" id="patFname" name="patFname"><br>
-    <label for="patLname">姓:</label>
-    <input type="text" id="patLname" name="patLname"><br>
-    <label for="hokenmei">保険証記号番号:</label>
-    <input type="text" id="hokenmei" name="hokenmei"><br>
-    <label for="hokenexp">有効期限:</label>
-    <input type="date" id="hokenexp" name="hokenexp"><br>
-    <input type="submit" value="登録" disabled>
-</form>
-<script>
-    const form = document.querySelector('form');
-    const submitButton = form.querySelector('input[type=submit]');
-    const inputs = form.querySelectorAll('input[type=text], input[type=number], input[type=date]');
+    <h1>患者登録</h1>
+    <form action="{% url 'patient_registration' %}" method="post">
+        {% csrf_token %}
+        <label for="empId">患者ID:</label>
+        <input type="text" id="empId" name="patId"><br>
+        <label for="patFname">名:</label>
+        <input type="text" id="patFname" name="patFname"><br>
+        <label for="patLname">姓:</label>
+        <input type="text" id="patLname" name="patLname"><br>
+        <label for="hokenmei">保険証記号番号:</label>
+        <input type="text" id="hokenmei" name="hokenmei"><br>
+        <label for="hokenexp">有効期限:</label>
+        <input type="date" id="hokenexp" name="hokenexp"><br>
+        <input type="submit" value="登録" disabled>
+    </form>
+    <script>
+        const form = document.querySelector('form');
+        const submitButton = form.querySelector('input[type=submit]');
+        const inputs = form.querySelectorAll('input[type=text], input[type=number], input[type=date]');
 
-    inputs.forEach(input => {
-        input.addEventListener('input', () => {
-            const empty = Array.from(inputs).some(input => !input.value);
-            submitButton.disabled = empty;
+        inputs.forEach(input => {
+            input.addEventListener('input', () => {
+                const empty = Array.from(inputs).some(input => !input.value);
+                submitButton.disabled = empty;
+            });
         });
-    });
-</script>
+    </script>
 </body>
 </html>

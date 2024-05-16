@@ -77,8 +77,8 @@ WSGI_APPLICATION = 'DjangoMediConnect.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'r4a133',
-        'USER': 'r4a133',
+        'NAME': 'r4a105',
+        'USER': 'r4a105',
         'PASSWORD': 'password',
         'HOST': 'localhost',
         'PORT': '3306',

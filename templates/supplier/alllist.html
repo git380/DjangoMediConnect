@@ -3,24 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <title>投与履歴</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #007BFF;
+        }
+        table {
+            width: 100%;
+            max-width: 800px;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
 </head>
 <body>
-<h1>投与履歴</h1>
-<table>
-    <tr>
-        <th>ID</th>
-        <th>薬名</th>
-        <th>数量</th>
-        <th>実施日</th>
-    </tr>
-    {% for supplier in data %}
-    <tr>
-        <td>{{ supplier.patid }}</td>
-        <td>{{ supplier.medicineid }}</td>
-        <td>{{ supplier.quantity }}</td>
-        <td>{{ supplier.impdate }}</td>
-    </tr>
-    {% endfor %}
-</table>
+    <h1>投与履歴</h1>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>薬名</th>
+            <th>数量</th>
+            <th>実施日</th>
+        </tr>
+        {% for supplier in data %}
+        <tr>
+            <td>{{ supplier.patid }}</td>
+            <td>{{ supplier.medicineid }}</td>
+            <td>{{ supplier.quantity }}</td>
+            <td>{{ supplier.impdate }}</td>
+        </tr>
+        {% endfor %}
+    </table>
 </body>
 </html>

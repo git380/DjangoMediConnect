@@ -3,68 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <title>検索結果</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+        }
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #007BFF;
+        }
+        label {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            display: block;
+        }
+        input[type="text"] {
+            width: calc(100% - 22px);
+            max-width: 400px;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        table {
+            width: 100%;
+            max-width: 800px;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        form {
+            margin: 0;
+        }
+    </style>
 </head>
 <body>
-<h1>検索結果</h1>
+    <h1>検索結果</h1>
 
-<!-- 患者検索機能 -->
-<label for="searchId">患者ID検索:</label>
-<input type="text" id="searchId">
-<button onclick="search()">検索</button>
+    <!-- 患者検索機能 -->
+    <label for="searchId">患者ID検索:</label>
+    <input type="text" id="searchId">
+    <button onclick="search()">検索</button>
 
-<table>
-    <tr>
-        <th>患者ID</th>
-        <th>姓</th>
-        <th>名</th>
-        <th>保険証記号番号</th>
-        <th>有効期限</th>
-        <th>指示</th>
-    </tr>
-
-    {% for pat in patients %}
+    <table>
         <tr>
-            <td>{{ pat.patid }}</td>
-            <td>{{ pat.patfname }}</td>
-            <td>{{ pat.patlname }}</td>
-            <td>{{ pat.hokenmei }}</td>
-            <td>{{ pat.hokenexp }}</td>
-            <td>
-                <form action="{% url 'treatment_selection' %}" method="get">
-                    {% csrf_token %}
-                    <input type="hidden" name="patId" value="{{ pat.patid }}">
-                    <input type="submit" value="指示">
-                </form>
-            </td>
+            <th>患者ID</th>
+            <th>姓</th>
+            <th>名</th>
+            <th>保険証記号番号</th>
+            <th>有効期限</th>
+            <th>指示</th>
         </tr>
-    {% endfor %}
-</table>
 
-<script>
-    function search() {
-        const input = document.getElementById("searchId").value;
-        const table = document.querySelector("table");
-        const rows = table.querySelectorAll("tr");
+        {% for pat in patients %}
+            <tr>
+                <td>{{ pat.patid }}</td>
+                <td>{{ pat.patfname }}</td>
+                <td>{{ pat.patlname }}</td>
+                <td>{{ pat.hokenmei }}</td>
+                <td>{{ pat.hokenexp }}</td>
+                <td>
+                    <form action="{% url 'treatment_selection' %}" method="get">
+                        {% csrf_token %}
+                        <input type="hidden" name="patId" value="{{ pat.patid }}">
+                        <input type="submit" value="指示">
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
 
-        let matchFound = false;
+    <script>
+        function search() {
+            const input = document.getElementById("searchId").value;
+            const table = document.querySelector("table");
+            const rows = table.querySelectorAll("tr");
 
-        rows.forEach(row => {
-            const cell = row.querySelector("td:first-child");
-            if (cell && cell.innerText === input) {
-                matchFound = true;
-            }
-        });
+            let matchFound = false;
 
-        if (matchFound) {
             rows.forEach(row => {
                 const cell = row.querySelector("td:first-child");
-                row.style.display = cell && cell.innerText === input ? "" : "none";
+                if (cell && cell.innerText === input) {
+                    matchFound = true;
+                }
             });
-        } else {
-            alert("該当する患者IDが見つかりませんでした。");
-        }
-    }
-</script>
 
+            if (matchFound) {
+                rows.forEach(row => {
+                    const cell = row.querySelector("td:first-child");
+                    row.style.display = cell && cell.innerText === input ? "" : "none";
+                });
+            } else {
+                alert("該当する患者IDが見つかりませんでした。");
+            }
+        }
+    </script>
 </body>
 </html>
