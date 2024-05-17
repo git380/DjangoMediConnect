@@ -275,5 +275,5 @@ def supplier_search(request):
                       {'suppliers': Shiiregyosha.objects.filter(shiireaddress__contains=request.POST['address'])})
 
 
-def aaaaaa(request):
-    return render(request, 'supplier/alllist.html', {'data': Treatment.objects.all()})
+def treatment_history(request):
+    return render(request, 'treatment/alllist.html', {'data': Treatment.objects.all()})
